@@ -24,7 +24,7 @@ def main():
         st.session_state.summary_text = ''
     if 'summary_type' not in st.session_state:
         st.session_state.summary_type = ''
-
+    
     # Extractive summarization only: Show the option to select number of lines
     if summary_type == "Extractive":
         # Initialize session state for numberOfLines
@@ -89,8 +89,11 @@ def main():
 
         # Copy to clipboard functionality using pyperclip
         if st.button('Copy Summary to Clipboard'):
-            pyperclip.copy(st.session_state.summary_text)
-            st.success("Summary copied to clipboard!")
-
+            try:
+                pyperclip.copy(st.session_state.summary_text)
+                st.success("Summary copied to clipboard!")
+            except pyperclip.PyperclipException:
+                st.error("Unable to copy summary to clipboard. Please try manually.")
+                
 if __name__ == "__main__":
     main()
